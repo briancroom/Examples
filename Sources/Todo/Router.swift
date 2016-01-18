@@ -14,6 +14,6 @@ let router = Router { route in
     	return try Response(status: .OK, templatePath: "Resources/todos.mustache", templateData: templateData)
     }
 
-    let staticFiles = FileResponder(basePath: "Resources/")
+    let staticFiles = ContentTypeEchoResponder(underlyingResponder: FileResponder(basePath: "Resources/"))
     route.fallback(staticFiles)
-} 
+}
