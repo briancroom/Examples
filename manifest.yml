@@ -1,0 +1,5 @@
+---
+applications:
+- name: Zewo-CF-Example
+  memory: 256M
+  buildpack: https://github.com/ddollar/heroku-buildpack-multi
