@@ -8,7 +8,7 @@ let router = Router { route in
     route.router("/api", APIv2 >>> Middleware.log)
 
     route.get("/todos") { _ in
-    	let templateData: TemplateData = todoResources.todos.all.map { todo in
+    	let templateData: TemplateData = try todoResources.todos.all().map { todo in
     		todo.description
     	}
     	return try Response(status: .OK, templatePath: "Resources/todos.mustache", templateData: templateData)
