@@ -4,8 +4,8 @@ import Middleware
 import Sideburns
 
 let router = Router { route in
-    route.router("/api", APIv1 >>> log)
-    route.router("/api", APIv2 >>> log)
+    route.router("/api", APIv1 >>> Middleware.log)
+    route.router("/api", APIv2 >>> Middleware.log)
 
     route.get("/todos") { _ in
     	let templateData: TemplateData = todoResources.todos.all.map { todo in
