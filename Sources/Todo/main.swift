@@ -3,22 +3,17 @@
 #else
     import Darwin.C
 #endif
-
-import CHTTPParser
-import CLibvenice
-
+import Foundation
 import Epoch
-import OpenSSL
 
-OpenSSL.initialize()
+setbuf(stdout, nil)
 
-Server(port: 8080, responder: router).startInBackground()
+let port = (NSProcessInfo.processInfo().environment["PORT"].flatMap { Int($0) }) ?? 8080
 
-Server(port: 8081, responder: router) { options in
-    options.SSL = try? SSLServerContext(
-        certificate: "/absolute/path/to/csr.pem",
-        privateKey: "/absolute/path/to/key.pem"
-    )
-}.startInBackground()
+let standardResponder = ErrorReportingResponder(underlyingResponder: router)
+let responder = CompositeResponder(webSocketResponder: webSocketServer, standardResponder: standardResponder)
 
-Server(port: 8082, responder: webSocketServer).start()
+log("Starting server on port \(port).")
+
+Server(port: port, responder: responder).start()
+
